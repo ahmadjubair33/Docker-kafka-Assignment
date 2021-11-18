@@ -16,9 +16,8 @@ def serializer(message):
 # Kafka Producer
 producer = KafkaProducer(
     bootstrap_servers=['kafka:9092'],
-    value_serializer=lambda x:dumps(x).encode('utf-8'),
-    api_version=(2)
-    ##value_serializer=serializer
+    api_version=(2),
+    value_serializer=serializer
 )
 
 

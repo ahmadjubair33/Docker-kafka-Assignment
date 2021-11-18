@@ -5,6 +5,8 @@ services:
     container_name: zookeeper
     ports:
       - "2181:2181"
+    networks:
+      - mynetwork
   kafka:
     image:  wurstmeister/kafka
     container_name: kafka
@@ -15,7 +17,7 @@ services:
   
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka
-      KAFKA_CREATE_TOPICS: "first_topic"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     networks:
