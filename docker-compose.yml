@@ -1,0 +1,45 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image:  wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+    - zookeeper
+  
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CREATE_TOPICS: "first_topic"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - mynetwork
+  producer:
+    build:
+      context: ./producer
+    ports:
+      - "8282:80"
+    depends_on:
+      - kafka
+    networks:
+      - mynetwork
+  consumer:
+    build:
+      context: ./consumer
+    ports:
+      - "8283:80"
+    depends_on:
+      - kafka
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+
+  
+
